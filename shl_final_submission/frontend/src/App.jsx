@@ -14,7 +14,7 @@ export default function App() {
     try {
 
       const res = await axios.post(
-        "https://shl-backend-htll.onrender.com/chat",
+        "http://127.0.0.1:8000/chat",
         {
           messages: [
             {

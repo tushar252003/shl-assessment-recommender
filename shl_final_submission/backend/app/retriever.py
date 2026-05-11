@@ -5,7 +5,7 @@ with open("catalog.json", "r", encoding="utf-8") as f:
 
 def retrieve(query, k=5):
 
-    query = query.lower()
+    query = query.lower().strip()
 
     scored = []
 
@@ -17,11 +17,13 @@ def retrieve(query, k=5):
             " ".join(item.get("tags", []))
         ).lower()
 
+        searchable_words = searchable_text.split()
+
         score = 0
 
         for word in query.split():
 
-            if word in searchable_text:
+            if word in searchable_words:
                 score += 1
 
         if score > 0:

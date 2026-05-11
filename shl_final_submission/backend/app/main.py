@@ -139,8 +139,7 @@ def chat(req: ChatRequest):
     ]
 
     if (
-        len(history.split()) < 5
-        or lower_history.strip() in vague_queries
+        lower_history.strip().lower() in vague_queries
     ):
         return {
             "reply": (
