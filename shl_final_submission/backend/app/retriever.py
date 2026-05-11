@@ -1,6 +1,5 @@
 import json
 
-# Load catalog
 with open("catalog.json", "r", encoding="utf-8") as f:
     catalog = json.load(f)
 
@@ -12,22 +11,24 @@ def retrieve(query, k=5):
 
     for item in catalog:
 
-        text = (
+        searchable_text = (
             item.get("name", "") + " " +
-            item.get("description", "") + " " +
-            item.get("test_type", "")
+            item.get("test_type", "") + " " +
+            " ".join(item.get("tags", []))
         ).lower()
 
         score = 0
 
         for word in query.split():
-            if word in text:
+
+            if word in searchable_text:
                 score += 1
 
-        scored.append((score, item))
+        if score > 0:
+            scored.append((score, item))
 
-    scored.sort(key=lambda x: x[0], reverse=True)
+    scored.sort(reverse=True, key=lambda x: x[0])
 
-    results = [item for score, item in scored if score > 0]
+    results = [item for score, item in scored[:k]]
 
-    return results[:k]
+    return results

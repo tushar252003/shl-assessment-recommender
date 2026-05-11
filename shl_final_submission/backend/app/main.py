@@ -59,20 +59,30 @@ def extract_context(history):
 
     # Skills extraction
     skills = [
-        "java",
-        "python",
-        "backend",
-        "frontend",
-        "leadership",
-        "communication",
-        "problem solving",
-        "stakeholder",
-        "developer",
-        "manager",
-        "reasoning",
-        "aptitude"
-    ]
-
+    "java",
+    "python",
+    "backend",
+    "frontend",
+    "leadership",
+    "communication",
+    "problem",
+    "solving",
+    "problem solving",
+    "stakeholder",
+    "developer",
+    "manager",
+    "reasoning",
+    "aptitude",
+    "software",
+    "engineer",
+    "coding",
+    "technical",
+    "teamwork",
+    "sales",
+    "personality",
+    "cognitive"
+]
+    
     for s in skills:
         if s in text:
             context["skills"].append(s)
