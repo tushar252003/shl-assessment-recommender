@@ -1,13 +1,4 @@
 import json
-import faiss
-import numpy as np
-from sentence_transformers import SentenceTransformer
-
-# Load embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
-
-# Load FAISS index
-index = faiss.read_index("shl.index")
 
 # Load catalog
 with open("catalog.json", "r", encoding="utf-8") as f:
@@ -15,17 +6,28 @@ with open("catalog.json", "r", encoding="utf-8") as f:
 
 def retrieve(query, k=5):
 
-    # Convert query into embedding
-    embedding = model.encode([query])
+    query = query.lower()
 
-    # Search similar vectors
-    D, I = index.search(np.array(embedding), k)
+    scored = []
 
-    results = []
+    for item in catalog:
 
-    for idx in I[0]:
+        text = (
+            item.get("name", "") + " " +
+            item.get("description", "") + " " +
+            item.get("test_type", "")
+        ).lower()
 
-        if idx < len(catalog):
-            results.append(catalog[idx])
+        score = 0
 
-    return results
+        for word in query.split():
+            if word in text:
+                score += 1
+
+        scored.append((score, item))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    results = [item for score, item in scored if score > 0]
+
+    return results[:k]
